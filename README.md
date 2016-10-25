@@ -45,9 +45,9 @@ If you want to install opencv (including cv2) on OSX with **Python 3+** (not 2.7
     (import cv2)
 
 
-## Download the data *** (do not forget this step! this may take some time!)
+## Download the data (this may take some time!)
 
-Download the following file (may take some time) and place it in the day2 folder  
+Download the following file and place it in the day2 folder  
 
 VGG16 weights (500MB) from [https://drive.google.com/file/d/0Bz7KyqmuGsilT0J5dmRCM0ROVHc/view](https://drive.google.com/file/d/0Bz7KyqmuGsilT0J5dmRCM0ROVHc/view)
 
