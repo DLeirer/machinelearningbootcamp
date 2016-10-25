@@ -1,23 +1,13 @@
 import numpy as np
-import plotly.graph_objs as go 
+import plotly.graph_objs as go
 
 from plotly.graph_objs import *
 from plotly.offline import download_plotlyjs, init_notebook_mode, iplot
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
 from sklearn import metrics
-
-def knn_organise_scores(grid_cv_scores, n_neighbors, weights):
-    scores = np.zeros((len(n_neighbors), len(weights)))
-
-    # grid_scores_ contains parameter settings and scores
-    for score in grid_cv_scores:
-        ne = score[0]['n_neighbors']
-        i = np.argmax(n_neighbors == ne)
-        j = 0 if (score[0]['weights'] == 'uniform') else 1
-        scores[i,j] = score[1]
-    return scores
 
 def rf_organise_scores(grid_cv_scores, n_estimators, max_depth):
     # reorganisig the scores in a matrix
@@ -31,11 +21,12 @@ def rf_organise_scores(grid_cv_scores, n_estimators, max_depth):
         scores[i,j] = score[1]
     return scores
 
-def knnDecisionPlot(XTrain, yTrain, XTest, yTest, header, n_neighbors, weights = "uniform"):
-    Xtrain = XTrain[:, :2]
+
+def dtDecisionPlot(XTrain, yTrain, XTest, yTest, header, feature_x=0, feature_y=1, **kwargs):
+    Xtrain = XTrain[:,:2]
     h = .02  # step size in the mesh
 
-    clf = KNeighborsClassifier(n_neighbors, weights)
+    clf = DecisionTreeClassifier(random_state=1, **kwargs)
     clf.fit(Xtrain, yTrain)
 
     x_min, x_max = Xtrain[:, 0].min() - 1, Xtrain[:, 0].max() + 1
@@ -50,113 +41,8 @@ def knnDecisionPlot(XTrain, yTrain, XTest, yTest, header, n_neighbors, weights =
         z = Z.reshape(xx.shape),
         showscale=False,
         opacity=0.8,
-        line = dict(
-            width = 1.5,
-            color = 'black'
-        ),
-        colorscale=[[0, '#1976d2'], [1, '#ffcc80']],  # custom colorscale
-    )
-
-    trace2 = go.Scatter(
-        x = XTest[yTest == 0,0],
-        y = XTest[yTest == 0,1],
-        mode = 'markers',
-        marker = Marker(
-            color = 'blue',
-            line = dict(
-                width = 0.9,
-            )
-        ),
-        name = 'high quality (test)'
-    )
-
-    trace3 = go.Scatter(
-        x = XTest[yTest == 1,0],
-        y = XTest[yTest == 1,1],
-        mode = 'markers',
-        marker = Marker(
-            color = 'orange',
-            line = dict(
-                width = 0.9,
-            ),
-            symbol = 4
-        ),
-        name = 'low quality (test)',
-    )
-
-    trace4 = go.Scatter(
-        x = XTrain[yTrain == 0,0],
-        y = XTrain[yTrain == 0,1],
-        mode = 'markers',
-        marker = Marker(
-            color = 'blue',
-            line = dict(
-                width = 0.9,
-            )
-        ),
-        name = 'high quality (train)'
-    )
-
-    trace5 = go.Scatter(
-        x = XTrain[yTrain == 1,0],
-        y = XTrain[yTrain == 1,1],
-        mode = 'markers',
-        marker = Marker(
-            color = 'orange',
-            line = dict(
-                width = 0.9,
-            ),
-            symbol = 4
-        ),
-        name = 'low quality (train)'
-    )
-
-    layout = go.Layout(
-        title = "2-Class Classification (k = %i, weights = '%s')" % (n_neighbors, weights),
-        xaxis = dict(title = header[0]),
-        yaxis = dict(title = header[1]),
-        showlegend=True,
-        autosize=False,
-        width=700,
-        height=500,
-        margin=Margin(
-            l=50,
-            r=50,
-            b=100,
-            t=50,
-            pad=4
-        ),
-    )
-
-    data = [trace1, trace2, trace3, trace4, trace5]
-    fig = dict(data=data, layout=layout)
-
-    iplot(fig)
-
-
-def dtDecisionPlot(XTrain, yTrain, XTest, yTest, header, max_depth=10):
-    Xtrain = XTrain[:, :2]
-    h = .02  # step size in the mesh
-
-    clf = DecisionTreeClassifier(max_depth=max_depth)
-    clf.fit(Xtrain, yTrain)
-
-    x_min, x_max = Xtrain[:, 0].min() - 1, Xtrain[:, 0].max() + 1
-    y_min, y_max = Xtrain[:, 1].min() - 1, Xtrain[:, 1].max() + 1
-    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),  np.arange(y_min, y_max, h))
-
-    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
-    # Put the result into a color plot
-    # Z = Z.reshape(xx.shape)
-
-    trace1 = go.Contour(
-        x = np.arange(x_min, x_max, h),
-        y = np.arange(y_min, y_max, h),
-        z = Z.reshape(xx.shape),
-        showscale=False,
-        opacity=0.8,
-        xaxis=header[0],
-        yaxis=header[1],
+        xaxis=header[feature_x],
+        yaxis=header[feature_y],
         line = dict(
             width = 1,
             color = 'black'
@@ -165,71 +51,63 @@ def dtDecisionPlot(XTrain, yTrain, XTest, yTest, header, max_depth=10):
     )
 
     trace2 = go.Scatter(
-        x = XTest[yTest == 0,0],
-        y = XTest[yTest == 0,1],
+        x = XTest[yTest == 0, feature_x],
+        y = XTest[yTest == 0, feature_y],
         mode = 'markers',
         marker = Marker(
-            #color = [('#0000FF' if i == 0 else '#FF0000') for i in yTest],
             color = 'blue',
             line = dict(
                 width = 0.9,
             )
-            #opacity=0.6
         ),
-        name = 'high quality (test)'
+        name = 'non-returning customers (test)'
     )
 
     trace3 = go.Scatter(
-        x = XTest[yTest == 1,0],
-        y = XTest[yTest == 1,1],
+        x = XTest[yTest == 1, feature_x],
+        y = XTest[yTest == 1, feature_y],
         mode = 'markers',
         marker = Marker(
-            #color = [('#0000FF' if i == 0 else '#FF0000') for i in yTest],
             color = 'orange',
             line = dict(
                 width = 0.9,
             ),
             symbol = 4
-            #opacity=0.6
         ),
-        name = 'low quality (test)',
+        name = 'returning customers (test)',
     )
 
     trace4 = go.Scatter(
-        x = XTrain[yTrain == 0,0],
-        y = XTrain[yTrain == 0,1],
+        x = XTrain[yTrain == 0, feature_x],
+        y = XTrain[yTrain == 0, feature_y],
         mode = 'markers',
         marker = Marker(
-            #color = [('#0000FF' if i == 0 else '#FF0000') for i in yTest],
             color = 'blue',
             line = dict(
                 width = 0.9,
             )
-            #opacity=0.6
         ),
-        name = 'high quality (train)'
+        name = 'non-returning customers (train)'
     )
 
     trace5 = go.Scatter(
-        x = XTrain[yTrain == 1,0],
-        y = XTrain[yTrain == 1,1],
+        x = XTrain[yTrain == 1, feature_x],
+        y = XTrain[yTrain == 1, feature_y],
         mode = 'markers',
         marker = Marker(
-            #color = [('#0000FF' if i == 0 else '#FF0000') for i in yTest],
             color = 'orange',
             line = dict(
                 width = 0.9,
             ),
             symbol = 4
-            #opacity=0.6
         ),
-        name = 'low quality (train)'
+        name = 'returning customers (train)'
     )
 
     layout = go.Layout(
         title = "2-Class classification Decision Trees",
-        xaxis = dict(title = header[0]),
-        yaxis = dict(title = header[1]),
+        xaxis = dict(title = header[feature_x]),
+        yaxis = dict(title = header[feature_y]),
         showlegend=True,
         autosize=False,
         width=700,
@@ -249,11 +127,11 @@ def dtDecisionPlot(XTrain, yTrain, XTest, yTest, header, max_depth=10):
     iplot(fig)
 
 
-def rfDecisionPlot(XTrain, yTrain, XTest, yTest, header, n_estimators=10):
+def rfDecisionPlot(XTrain, yTrain, XTest, yTest, header, feature_x=0, feature_y=1, **kwargs):
     Xtrain = XTrain[:, :2]
     h = .02  # step size in the mesh
 
-    clf = RandomForestClassifier(n_estimators=n_estimators, random_state=1)
+    clf = RandomForestClassifier(random_state=1, **kwargs)
     clf.fit(Xtrain, yTrain)
 
     x_min, x_max = Xtrain[:, 0].min() - 1, Xtrain[:, 0].max() + 1
@@ -261,8 +139,6 @@ def rfDecisionPlot(XTrain, yTrain, XTest, yTest, header, n_estimators=10):
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h),  np.arange(y_min, y_max, h))
 
     Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
-    # Put the result into a color plot
-    # Z = Z.reshape(xx.shape)
 
     trace1 = go.Contour(
         x = np.arange(x_min, x_max, h),
@@ -270,8 +146,8 @@ def rfDecisionPlot(XTrain, yTrain, XTest, yTest, header, n_estimators=10):
         z = Z.reshape(xx.shape),
         showscale=False,
         opacity=0.8,
-        xaxis=header[0],
-        yaxis=header[1],
+        xaxis=header[feature_x],
+        yaxis=header[feature_y],
         line = dict(
             width = 1,
             color = 'black'
@@ -280,71 +156,63 @@ def rfDecisionPlot(XTrain, yTrain, XTest, yTest, header, n_estimators=10):
     )
 
     trace2 = go.Scatter(
-        x = XTest[yTest == 0,0],
-        y = XTest[yTest == 0,1],
+        x = XTest[yTest == 0, feature_x],
+        y = XTest[yTest == 0, feature_y],
         mode = 'markers',
         marker = Marker(
-            #color = [('#0000FF' if i == 0 else '#FF0000') for i in yTest],
             color = 'blue',
             line = dict(
                 width = 0.9,
             )
-            #opacity=0.6
         ),
-        name = 'high quality (test)'
+        name = 'non-returning customers (test)'
     )
 
     trace3 = go.Scatter(
-        x = XTest[yTest == 1,0],
-        y = XTest[yTest == 1,1],
+        x = XTest[yTest == 1, feature_x],
+        y = XTest[yTest == 1, feature_y],
         mode = 'markers',
         marker = Marker(
-            #color = [('#0000FF' if i == 0 else '#FF0000') for i in yTest],
             color = 'orange',
             line = dict(
                 width = 0.9,
             ),
             symbol = 4
-            #opacity=0.6
         ),
-        name = 'low quality (test)',
+        name = 'returning customers (test)',
     )
 
     trace4 = go.Scatter(
-        x = XTrain[yTrain == 0,0],
-        y = XTrain[yTrain == 0,1],
+        x = XTrain[yTrain == 0, feature_x],
+        y = XTrain[yTrain == 0, feature_y],
         mode = 'markers',
         marker = Marker(
-            #color = [('#0000FF' if i == 0 else '#FF0000') for i in yTest],
             color = 'blue',
             line = dict(
                 width = 0.9,
             )
-            #opacity=0.6
         ),
-        name = 'high quality (train)'
+        name = 'non-returning customers (train)'
     )
 
     trace5 = go.Scatter(
-        x = XTrain[yTrain == 1,0],
-        y = XTrain[yTrain == 1,1],
+        x = XTrain[yTrain == 1, feature_x],
+        y = XTrain[yTrain == 1, feature_y],
         mode = 'markers',
         marker = Marker(
-            #color = [('#0000FF' if i == 0 else '#FF0000') for i in yTest],
             color = 'orange',
             line = dict(
                 width = 0.9,
             ),
             symbol = 4
-            #opacity=0.6
         ),
-        name = 'low quality (train)'
+        name = 'returning customers (train)'
     )
 
     layout = go.Layout(
         title = "2-Class classification Random Forests",
-        xaxis = dict(title = header[0]),
-        yaxis = dict(title = header[1]),
+        xaxis = dict(title = header[feature_x]),
+        yaxis = dict(title = header[feature_y]),
         showlegend=True,
         autosize=False,
         width=700,
@@ -363,6 +231,213 @@ def rfDecisionPlot(XTrain, yTrain, XTest, yTest, header, n_estimators=10):
     fig = dict(data=data, layout=layout)
     iplot(fig)
 
+def logregDecisionPlot(XTrain, yTrain, XTest, yTest, header, feature_x=0, feature_y=1, **kwargs):
+    Xtrain = XTrain[:,[feature_x, feature_y]]
+    h = .02  # step size in the mesh
+
+    clf = LogisticRegression(random_state=1, **kwargs)
+    clf.fit(Xtrain, yTrain)
+
+    x_min, x_max = Xtrain[:, 0].min() - 1, Xtrain[:, 0].max() + 1
+    y_min, y_max = Xtrain[:, 1].min() - 1, Xtrain[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),  np.arange(y_min, y_max, h))
+
+    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+
+    trace1 = go.Contour(
+        x = np.arange(x_min, x_max, h),
+        y = np.arange(y_min, y_max, h),
+        z = Z.reshape(xx.shape),
+        showscale=False,
+        opacity=0.8,
+        xaxis=header[feature_x],
+        yaxis=header[feature_y],
+        line = dict(
+            width = 1,
+            color = 'black'
+        ),
+        colorscale=[[0, '#1976d2'], [1, '#ffcc80']],  # custom colorscale
+    )
+
+    trace2 = go.Scatter(
+        x = XTest[yTest == 0, feature_x],
+        y = XTest[yTest == 0, feature_y],
+        mode = 'markers',
+        marker = Marker(
+            color = 'blue',
+            line = dict(
+                width = 0.9,
+            )
+        ),
+        name = 'non-returning customers (test)'
+    )
+
+    trace3 = go.Scatter(
+        x = XTest[yTest == 1, feature_x],
+        y = XTest[yTest == 1, feature_y],
+        mode = 'markers',
+        marker = Marker(
+            color = 'orange',
+            line = dict(
+                width = 0.9,
+            ),
+            symbol = 4
+        ),
+        name = 'returning customers (test)',
+    )
+
+    trace4 = go.Scatter(
+        x = XTrain[yTrain == 0, feature_x],
+        y = XTrain[yTrain == 0, feature_y],
+        mode = 'markers',
+        marker = Marker(
+            color = 'blue',
+            line = dict(
+                width = 0.9,
+            )
+        ),
+        name = 'non-returning customers (train)'
+    )
+
+    trace5 = go.Scatter(
+        x = XTrain[yTrain == 1, feature_x],
+        y = XTrain[yTrain == 1, feature_y],
+        mode = 'markers',
+        marker = Marker(
+            color = 'orange',
+            line = dict(
+                width = 0.9,
+            ),
+            symbol = 4
+        ),
+        name = 'returning customers (train)'
+    )
+
+    layout = go.Layout(
+        title = "2-Class classification Logistic Regression",
+        xaxis = dict(title = header[feature_x]),
+        yaxis = dict(title = header[feature_y]),
+        showlegend=True,
+        autosize=False,
+        width=700,
+        height=500,
+        margin=Margin(
+            l=50,
+            r=50,
+            b=100,
+            t=50,
+            pad=4
+        ),
+    )
+
+    data = [trace1, trace2, trace3, trace4, trace5]
+
+    fig = dict(data=data, layout=layout)
+    iplot(fig)
+
+def svmDecisionPlot(XTrain, yTrain, XTest, yTest, header, feature_x=0, feature_y=1, **kwargs):
+    Xtrain = XTrain[:,[feature_x, feature_y]]
+    h = .02  # step size in the mesh
+
+    clf = SVC(random_state=1, **kwargs)
+    clf.fit(Xtrain, yTrain)
+
+    x_min, x_max = Xtrain[:, 0].min() - 1, Xtrain[:, 0].max() + 1
+    y_min, y_max = Xtrain[:, 1].min() - 1, Xtrain[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),  np.arange(y_min, y_max, h))
+
+    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+
+    trace1 = go.Contour(
+        x = np.arange(x_min, x_max, h),
+        y = np.arange(y_min, y_max, h),
+        z = Z.reshape(xx.shape),
+        showscale=False,
+        opacity=0.8,
+        xaxis=header[feature_x],
+        yaxis=header[feature_y],
+        line = dict(
+            width = 1,
+            color = 'black'
+        ),
+        colorscale=[[0, '#1976d2'], [1, '#ffcc80']],  # custom colorscale
+    )
+
+    trace2 = go.Scatter(
+        x = XTest[yTest == 0, feature_x],
+        y = XTest[yTest == 0, feature_y],
+        mode = 'markers',
+        marker = Marker(
+            color = 'blue',
+            line = dict(
+                width = 0.9,
+            )
+        ),
+        name = 'non-returning customers (test)'
+    )
+
+    trace3 = go.Scatter(
+        x = XTest[yTest == 1, feature_x],
+        y = XTest[yTest == 1, feature_y],
+        mode = 'markers',
+        marker = Marker(
+            color = 'orange',
+            line = dict(
+                width = 0.9,
+            ),
+            symbol = 4
+        ),
+        name = 'returning customers (test)',
+    )
+
+    trace4 = go.Scatter(
+        x = XTrain[yTrain == 0, feature_x],
+        y = XTrain[yTrain == 0, feature_y],
+        mode = 'markers',
+        marker = Marker(
+            color = 'blue',
+            line = dict(
+                width = 0.9,
+            )
+        ),
+        name = 'non-returning customers (train)'
+    )
+
+    trace5 = go.Scatter(
+        x = XTrain[yTrain == 1, feature_x],
+        y = XTrain[yTrain == 1, feature_y],
+        mode = 'markers',
+        marker = Marker(
+            color = 'orange',
+            line = dict(
+                width = 0.9,
+            ),
+            symbol = 4
+        ),
+        name = 'returning customers (train)'
+    )
+
+    layout = go.Layout(
+        title = "2-Class classification SVMs",
+        xaxis = dict(title = header[feature_x]),
+        yaxis = dict(title = header[feature_y]),
+        showlegend=True,
+        autosize=False,
+        width=700,
+        height=500,
+        margin=Margin(
+            l=50,
+            r=50,
+            b=100,
+            t=50,
+            pad=4
+        ),
+    )
+
+    data = [trace1, trace2, trace3, trace4, trace5]
+
+    fig = dict(data=data, layout=layout)
+    iplot(fig)
 
 def rfAvgAcc(rfModel, XTest, yTest):
     preds = []
