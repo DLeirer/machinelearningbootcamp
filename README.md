@@ -1,13 +1,11 @@
 # Machine Learning Bootcamp Setup Instructions
 
-## Install Python
+### Install Python
 
 Install Anaconda (**Python 2.7**) from:  [https://www.continuum.io/downloads](https://www.continuum.io/downloads)
-This includes python 2.7.9 and the necessary libraries we will be using: "numpy", "matplotlib", "scipy" and "scikit-learn"
+This includes python 2.7.9 and the necessary libraries we will be using: "numpy", "scipy" and "scikit-learn"
 
 ## Install Packages with pip
-
-Installing required packages using "pip"
 
 Open your terminal and check whether you have the "pip" function installed by typing pip (and enter).
 If you do not have pip installed, check the link: [https://pip.pypa.io/en/latest/installing/](https://pip.pypa.io/en/latest/installing/) (If installing via the terminal/command line, ensure you are in the directory where you have downloaded the file "get-pip" or if using chrome right-click on the link to download, save to desktop, and simply double click on the executable).
@@ -46,30 +44,31 @@ If you want to install opencv (including cv2) on OSX with **Python 3+** (not 2.7
     conda install --channel https://conda.anaconda.org/menpo opencv3
     (import cv2)
 
-## Install git
+
+## Download the data *** (do not forget this step! this may take some time!)
+
+Download the following file (may take some time) and place it in the day2 folder  
+
+VGG16 weights (500MB) from [https://drive.google.com/file/d/0Bz7KyqmuGsilT0J5dmRCM0ROVHc/view](https://drive.google.com/file/d/0Bz7KyqmuGsilT0J5dmRCM0ROVHc/view)
+
+
+### Install git and sign up on GitHub (optional)
+
+**This step is only required if you are using git clone and not download in the next step**
 
 Install git if you don't have it: [http://git-scm.com/](http://git-scm.com/)
-
-
-##  Sign up for a GitHub
 
 Sign up for a GitHub account or sign in if you have one: [github.com](https://github.com)
 
 
-## Clone or download the code from the CCA GitHub repository
+### Clone or download the code from the CCA GitHub repository
 
-You can create a copy of the provided code on your local machine by using the "git clone" command on your console: 
+You can create a copy of the provided code on your local machine by using the "git clone" command on your console:
 
     git clone https://github.com/cambridgecoding/machinelearningbootcamp.git 
 
 Alternatively, click on the "Download ZIP" button under [https://github.com/cambridgecoding/machinelearningbootcamp](https://github.com/cambridgecoding/machinelearningbootcamp) 
 
-
-## Download the data
-
-Download the following file (may take some time) and place it in the day2 folder  
-
-VGG16 weights (500MB) from [https://drive.google.com/file/d/0Bz7KyqmuGsilT0J5dmRCM0ROVHc/view](https://drive.google.com/file/d/0Bz7KyqmuGsilT0J5dmRCM0ROVHc/view)
 
 ## Finalise the setup
 
