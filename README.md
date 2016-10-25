@@ -1,4 +1,4 @@
-# Machine Learning Bootcamp Setup Instructions
+## Advanced Machine Learning Techniques with Python Setup Instructions
 
 ### Install Python
 
