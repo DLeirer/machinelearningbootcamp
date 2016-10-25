@@ -33,15 +33,15 @@ where `<package>` can be any of the aforementioned libraries.
 
 Once more in your terminal run:
 
-    conda install opencv
+    (sudo) conda install opencv
 
 If the opencv/cv2 library does not load and gives you an error while in the previous step, you may want to try this newer version:
 
-    conda install -c https://conda.binstar.org/menpo opencv
+    (sudo) conda install -c https://conda.binstar.org/menpo opencv
 
 If you want to install opencv (including cv2) on OSX with **Python 3+** (not 2.7) try this:
 
-    conda install --channel https://conda.anaconda.org/menpo opencv3
+    (sudo) conda install --channel https://conda.anaconda.org/menpo opencv3
     (import cv2)
 
 
