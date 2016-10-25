@@ -5,7 +5,7 @@
 Install Anaconda (**Python 2.7**) from:  [https://www.continuum.io/downloads](https://www.continuum.io/downloads)
 This includes python 2.7.9 and the necessary libraries we will be using: "numpy", "scipy" and "scikit-learn"
 
-## Install Packages with pip
+### Install Packages with pip
 
 Open your terminal and check whether you have the "pip" function installed by typing pip (and enter).
 If you do not have pip installed, check the link: [https://pip.pypa.io/en/latest/installing/](https://pip.pypa.io/en/latest/installing/) (If installing via the terminal/command line, ensure you are in the directory where you have downloaded the file "get-pip" or if using chrome right-click on the link to download, save to desktop, and simply double click on the executable).
@@ -18,18 +18,18 @@ You may need to use `sudo pip install` (for OSX, *nix, etc) or run your command 
 
 Note that if you're on windows you'll need to install some additional packages to use theano:
 
-    conda install mingw libpython
+    (sudo) conda install mingw libpython
 
 in case that theano doesn't work after installing its dependencies make sure you have the latest version.
 
 
 If you already have any of the previously-mentioned libraries installed, you can update them to a newer version using the syntax:
 
-    pip install <package> --upgrade
+    (sudo) pip install <package> --upgrade
 
 where `<package>` can be any of the aforementioned libraries.
 
-## Install required packages with Conda
+### Install required packages with conda
 
 Once more in your terminal run:
 
@@ -45,7 +45,7 @@ If you want to install opencv (including cv2) on OSX with **Python 3+** (not 2.7
     (import cv2)
 
 
-## Download the data (this may take some time!)
+### Download the data (this may take some time!)
 
 Download the following file and place it in the day2 folder  
 
@@ -70,7 +70,7 @@ You can create a copy of the provided code on your local machine by using the "g
 Alternatively, click on the "Download ZIP" button under [https://github.com/cambridgecoding/machinelearningbootcamp](https://github.com/cambridgecoding/machinelearningbootcamp) 
 
 
-## Finalise the setup
+### Finalise the setup
 
 Navigate to the cloned "machinelearningbootcamp" repository on your local machine, and open and run the "[load_libraries.ipynb](https://github.com/cambridgecoding/machinelearningbootcamp/blob/master/load_libraries.ipynb)" file. Wait for the pre-fetching of the CIFAR10 dataset to be completed (it may take a while but a progress bar will show you the remaining time) and check whether the libraries have been successfully loaded. To execute the notebook, in your terminal run:
 
