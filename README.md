@@ -43,7 +43,30 @@ If you want to install opencv (including cv2) on OSX with **Python 3+** (not 2.7
 
     (sudo) conda install --channel https://conda.anaconda.org/menpo opencv3
     (import cv2)
+    
+## Setting up keras
 
+You will need to configure keras the keras package to work with Theano. In your terminal run:
+
+    python -c "import keras"
+
+This will generate a configuration file at location ~/.keras/keras.json. Open the file using a text editor, it should look like this:
+
+    {
+        "image_dim_ordering": "tf",
+        "epsilon": 1e-07,
+        "floatx": "float32",
+        "backend": "tensorflow"
+    }
+
+Replace "tf" with "th" and "tensorflow" with "theano" so it looks like this
+
+    {
+        "image_dim_ordering": "th",
+        "epsilon": 1e-07,
+        "floatx": "float32",
+        "backend": "theano"
+    }
 
 ### Download the data (this may take some time!)
 
