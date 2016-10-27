@@ -79,7 +79,7 @@ VGG16 weights (500MB) from [https://drive.google.com/file/d/0Bz7KyqmuGsilT0J5dmR
 
 **This step is only required if you are using git clone and not download in the next step**
 
-Install git if you don't have it: [http://git-scm.com/](http://git-scm.com/)
+Check if you have git by typing `git --version` in your terminal if it returns an error (`command not found`), you can install it: [http://git-scm.com/](http://git-scm.com/)
 
 Sign up for a GitHub account or sign in if you have one: [github.com](https://github.com)
 
