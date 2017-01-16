@@ -1,0 +1,50 @@
+# SPECIFIC FILES HERE
+
+# *.pdf
+# *.html
+
+# -------------------------------------
+# Mac horror
+*.DS_Store
+
+# Jupyter Notebook files
+*-checkpoint.ipynb
+
+# Python compiled files
+*.pyc
+
+# Adobe illustrator
+*.ai
+
+# -------------------------------------
+# Latex crap
+
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.nav
+*.snm
+*.vrb
+
+## Intermediate documents:
+*.dvi
+*-converted-to.*
+*.ps
+*.eps
+
+## Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
