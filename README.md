@@ -17,7 +17,7 @@ Note that most of the requirements are for the second day (apart from Anaconda) 
 
 you will also download a big dataset we will use on the second day.
 
-If you already have those tools installed, please go to the end of these instructions and execute the notebook that all those libraries can indeed be imported without problem. 
+If you already have those tools installed, please go to the end of these instructions and execute the notebook that all those libraries can indeed be imported without problem.
 
 <!-- ## Quick setup
 
@@ -73,7 +73,7 @@ git clone https://github.com/cambridgecoding/machinelearningbootcamp.git
 ### Install Anaconda
 
 Install Anaconda (we recommend taking the version for **Python 2.7**) from:  [https://www.continuum.io/downloads](https://www.continuum.io/downloads)
-This includes python 2.7.9 and the necessary libraries we will be using such as `numpy`, `scipy` and `scikit-learn`. Check that everything is properly set up by going to your Terminal/Command Line and typing
+This includes `python 2.7.9` and the necessary libraries we will be using such as `numpy`, `scipy` and `scikit-learn`. Check that everything is properly set up by going to your Terminal/Command Line and typing
 
 ```bash
 python -V
@@ -81,7 +81,7 @@ python -V
 
 which should return something like `Python 2.7.12 :: Anaconda 4.2.0`.
 
-**Remark**: if it does not return this (this may happen if you're a Windows user), open the program **Anaconda-Navigator**, you will be able to install the packages mentioned below via that application. For this, click on  "Environments" then click on the drop-down menu at the top that says "Installed" and select "Not Installed", then type the name of the packages mentioned below in the search bar and install them.
+**Remark**: if it does not return this (which may happen if you're a Windows user), open the program **Anaconda-Navigator**, you will be able to install the packages mentioned below via that application. For this, click on  "Environments" then click on the drop-down menu at the top that says "Installed" and select "Not Installed", then type the name of the packages mentioned below in the search bar and install them.
 
 ### Install Packages with pip
 
@@ -181,7 +181,7 @@ Check if you have git by typing `git --version` in your terminal if it returns a
 
 Sign up for a GitHub account or sign in if you have one: [github.com](https://github.com)
 
-### Clone or download the code from the CCA GitHub repository
+### Clone or download the code from our GitHub repository
 
 You can create a copy of the provided code on your local machine by using the "git clone" command on your console:
 
@@ -201,10 +201,10 @@ ipython notebook load_libraries.ipynb
 
 Wait for the pre-fetching of the CIFAR10 dataset to be completed (it may take a while but a progress bar will show you the remaining time) and check whether the libraries have been successfully loaded.
 
-* You can run the notebook document step-by-step (one cell a time) by pressing **shift + enter**.
-* You can run the whole notebook in a single step by clicking on the menu Cell -> Run All.
-* To restart the kernel (i.e. the computational engine), click on the menu Kernel -> Restart. This can be useful to start over a computation from scratch (e.g. variables are deleted, open files are closed, etc...).
-* Click on the menu Help -> User Interface Tour for an overview of the Jupyter Notebook App user interface.
+* You can run the notebook document step-by-step (one cell a time) by clicking in the cell then pressing **shift + enter**.
+* You can run the whole notebook in a single step by clicking on the menu `Cell` -> `Run All`.
+* To restart the kernel (i.e. the computational engine), click on the menu  `Kernel` -> `Restart`. This can be useful to start over a computation from scratch (e.g. variables are deleted, open files are closed, etc...).
+* Click on the menu `Help` -> `User Interface Tour` for an overview of the Jupyter Notebook App user interface.
 
 **Remark 1**: if from earlier you had issues with using the terminal, you can also use the "Anaconda Navigator" to try to open and run this ipython notebook.
 
@@ -218,4 +218,4 @@ and, further down
 
 ![What you should see at the bottom of your notebook](good.png)
 
-If you do not see that and see something that looks awful, something went wrong in the setup. Please look at the end of the error message to try to identify where it came from. If you have no idea, please send us a screenshot of the error message and we'll try to figure out what's going on!
+If you do not see that and get a message that looks awful, something went wrong in the setup. Please look at the end of the error message to try to identify where it came from. If you have no idea, please send us a screenshot of the error message and we'll try to figure out what's going on!
