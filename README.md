@@ -17,7 +17,7 @@ Note that most of the requirements are for the second day (apart from Anaconda) 
 
 you will also download a big dataset we will use on the second day.
 
-If you already have those tools installed, please go to the end of these instructions and execute the notebook that all those libraries can indeed be imported without problem.
+If you already have those tools installed, please go to the end of these instructions and execute the notebook to check that all those libraries can indeed be imported without problem.
 
 <!-- ## Quick setup
 
