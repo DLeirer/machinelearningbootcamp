@@ -4,7 +4,7 @@
 
 We offer below a detailed setup. Please bear in mind that we have run this workshop multiple times and the setup below works "most of the time". If your computer is being really stubborn, please send us an email with a screenshot of what you're confronted with and we will see how we can help you.
 
-Note that most of the requirements are for the second day (apart from Anaconda) so that if you have an issue with `opencv` (quite common), we should be able to help you on the day. Please do make sure to download the data as it is quite sizeable and would take a long time to download if you all do it simultaneously on the Saturday!
+Note that most of the requirements are for the second day (apart from Anaconda) so that if you have an issue with `opencv` (quite common), we should be able to help you on the day. Please do make sure to download the data as it is quite sizeable and would take a long time to download if you all do it simultaneously on the Saturday! Also see at the end of this document for "known issues" and possible solutions.
 
 **Step 0** = go make yourself a tea or a coffee (or a Gin and Tonic, whatever floats your boat), unless you're already an expert with installing packages etc, the following set of instructions is likely to take you a good half an hour.
 
@@ -14,6 +14,7 @@ Note that most of the requirements are for the second day (apart from Anaconda) 
 * **Plotly**: a tool for interactive visualisation.
 * **Keras**: a package to deal with Neural Networks (needed for the second day).
 * **Theano**: one of the tool Keras can use to compute things efficiently.
+* **opencv**: a library for manipulating images.
 
 you will also download a big dataset we will use on the second day.
 
@@ -144,7 +145,7 @@ This will probably return an error about "TensorFlow" not being available. Don't
 ```bash
 sed -i '' -e 's/tf/th/' -e 's/tensorflow/theano/' ~/.keras/keras.json
 ```
-
+don't
 If you'd like to do it manually, open the file `~/.keras/keras.json` (note that it starts by `.` so that it will be a hidden file which may not appear expliclty when you browse your home folder). Open the file using a text editor, it should look like this:
 
 ```json
@@ -219,3 +220,29 @@ and, further down
 ![What you should see at the bottom of your notebook](good.png)
 
 If you do not see that and get a message that looks awful, something went wrong in the setup. Please look at the end of the error message to try to identify where it came from. If you have no idea, please send us a screenshot of the error message and we'll try to figure out what's going on!
+
+## Known issues
+
+Here, we're trying to keep track of the common issues encountered and how we went around them.
+
+### Pip SSL certificate issues
+
+Typically you're a Windows user with a company laptop. The corporate firewall is preventing you from using pip. You tried to enter something like
+
+```bash
+pip install keras
+```
+
+and are then confronted with a bunch of crap including a line that looks like:
+
+```
+Could not fetch URL <xxxxx>: connection error: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:<yyyyy>)
+```
+
+where `xxxxx` is some URL and `yyyyy` is some number. Ways around (they may not work so several possible solutions here):
+
+* `pip install --upgrade pip && pip install --index-url=http://pypi.python.org/simple/ --trusted-host pypi.python.org keras` (replace `keras` by the package of choice, leave the rest the same)
+* `easy_install keras` (sometimes it "just works")
+* reverting to an older `pip` that does not use SSL connections
+    + `easy_install pip==1.2.1`
+    + then `pip install keras`
